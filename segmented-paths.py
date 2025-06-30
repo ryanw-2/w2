@@ -10,16 +10,20 @@ def snap_to_grid(pt, grid_size=5):
     return (round(pt[0] / grid_size) * grid_size, round(pt[1] / grid_size) * grid_size)
 
 def angle_between(p1, p2, p3):
+    """
+    Returns angle (in degrees) between vectors p1→p2 and p2→p3.
+    Measures how much the path turns at point p2.
+    """
     v1 = np.array(p2) - np.array(p1)
     v2 = np.array(p3) - np.array(p2)
     if np.linalg.norm(v1) == 0 or np.linalg.norm(v2) == 0:
         return 0
-    angle = math.acos(np.clip(np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2)), -1.0, 1.0))
-    return math.degrees(angle)
+    angle_rad = math.acos(np.clip(np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2)), -1.0, 1.0))
+    return math.degrees(angle_rad)
 
-def segment_path(points, angle_threshold=10):
+def segment_path(points, angle_threshold=136):
     """
-    Split a list of points into subpaths labeled as 'straight' or 'curved'
+    Splits a path into 'straight' or 'curved' segments based on local angular deviation.
     """
     if len(points) < 3:
         return [('straight', points)]
@@ -31,22 +35,23 @@ def segment_path(points, angle_threshold=10):
     for i in range(2, len(points)):
         a, b, c = points[i - 2], points[i - 1], points[i]
         angle = angle_between(a, b, c)
-        if abs(angle - 180) < angle_threshold or angle < angle_threshold:
-            if mode != 'straight':
-                segments.append((mode, buffer))
-                buffer = [b]
-                mode = 'straight'
+        print(f"Angle at point {b}: {abs(angle-180):.2f}°")
+
+        if abs(angle-180) < 136:
+            segments.append(('straight', buffer))
+            buffer = [b]
+            mode = 'straight'
         else:
-            if mode != 'curved':
-                segments.append((mode, buffer))
-                buffer = [b]
-                mode = 'curved'
+            segments.append(('curved', buffer))
+            buffer = [b]
+            mode = 'curved'
+
         buffer.append(c)
 
     segments.append((mode, buffer))
     return segments
 
-def extract_geometry_from_sketch(image_path: str, epsilon=2.0, visualize_steps: bool = True):
+def extract_geometry_from_sketch(image_path: str, epsilon=3.0, visualize_steps: bool = True):
     input_img = cv2.imread(image_path)
     if input_img is None:
         print("Error: Could not read image at file path")
@@ -69,6 +74,12 @@ def extract_geometry_from_sketch(image_path: str, epsilon=2.0, visualize_steps: 
     )
     print(f"Found {len(contours)} initial contours.")
 
+
+    if visualize_steps:
+        cv2.imshow("Step 1. Contours", skeleton_img)
+        cv2.waitKey(0)
+
+
     refined_paths = []
     path_types = []
 
@@ -90,12 +101,15 @@ def extract_geometry_from_sketch(image_path: str, epsilon=2.0, visualize_steps: 
     print(f"Produced {len(refined_paths)} cleaned segments.")
 
     if visualize_steps:
+        black_mask = np.zeros(input_img.shape[:2], dtype="uint8")
         vis_img = input_img.copy()
         for i, path in enumerate(refined_paths):
             color = (0, 255, 0) if path_types[i] == 'straight' else (0, 0, 255)
             np_path = np.array(path, dtype=np.int32)
             cv2.polylines(vis_img, [np_path], isClosed=False, color=color, thickness=1)
+            cv2.polylines(black_mask, [np_path], isClosed=False, color=(255,255,255), thickness=1)
         cv2.imshow("Refined Geometry", vis_img)
+        cv2.imshow("Path Cleaned", black_mask)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
@@ -131,8 +145,9 @@ def save_paths_to_csv_prim(paths, output_path):
     print(f"Saved processed paths to {output_path}")
 
 if __name__ == "__main__":
-    file_path = "./testPlanLine-Cleaned.jpg"
+    file_path = "./testPlanSketch2.jpg"
     cleaned_paths, path_kinds = extract_geometry_from_sketch(file_path, epsilon=2.0, visualize_steps=True)
 
     if cleaned_paths:
+        save_paths_to_csv(cleaned_paths, path_kinds, 'paths_annotated.csv')
         save_paths_to_csv_prim(cleaned_paths, 'paths_cleaned.csv')
