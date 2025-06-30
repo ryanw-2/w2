@@ -45,7 +45,8 @@ def extract_geometry_from_sketch(
     if input_img is None:
         print("Error: Could not read image at file path")
         return
-
+    
+    input_img = cv2.flip(input_img, 0)
     gray = cv2.cvtColor(input_img, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     binary_img = cv2.adaptiveThreshold(
@@ -128,8 +129,9 @@ def save_paths_to_csv(paths, output_path):
     print(f"Successfully saved path polyline data to {output_path}")
 
 if __name__ == "__main__":
-    wall_paths = extract_geometry_from_sketch("./testPlanSketch-Cleaned.jpg", visualize_steps=True)
+    file_path = "./testPlanSketch2.jpg"
+    wall_paths = extract_geometry_from_sketch(file_path, visualize_steps=True)
 
     if wall_paths:
-        save_lines_to_json(wall_paths, 'level.json')
+        # save_lines_to_json(wall_paths, 'level.json')
         save_paths_to_csv(wall_paths, 'paths.csv')
