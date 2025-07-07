@@ -4,18 +4,8 @@ import math
 import csv
 from skimage.morphology import skeletonize
 import json
-"""
-mysql username: root
-mysql passwd:    abcd
-"""
 
-lower_blue = np.array([110, 50, 50])
-upper_blue = np.array([130, 255, 255])
-lower_red = np.array([0, 100, 100])
-upper_red = np.array([20, 255, 255])
-lower_black = np.array([0, 0, 0])
-upper_black = np.array([180, 255, 30])
-
+from rdp_utils import rdp
 
 def callback(input):
     pass
@@ -23,24 +13,7 @@ def callback(input):
 def extract_geometry_from_sketch(
     image_path: str, epsilon_multiplier: float = 0.001, visualize_steps: bool = True
 ):
-    """
-    Takes the path to a floor plan sketch and returns a list of polylines
-    representing all walls (straight and curved).
 
-    This pipeline can handle any shape by:
-    1. Creating a clean, one-pixel-wide skeleton of the drawing.
-    2. Finding all continuous contours in the skeleton.
-    3. Approximating each contour with a series of connected line segments.
-
-    Args:
-        image_path (str): The path to the input image file.
-        epsilon_multiplier (float): Controls the precision of the curve approximation.
-                                  Smaller values give more detail but more points.
-        visualize_steps (bool): If True, displays intermediate images for debugging.
-
-    Returns:
-        list: A list of "paths," where each path is a list of points (x, y).
-    """
     input_img = cv2.imread(image_path)
     if input_img is None:
         print("Error: Could not read image at file path")
@@ -48,18 +21,19 @@ def extract_geometry_from_sketch(
     
     input_img = cv2.flip(input_img, 0)
     gray = cv2.cvtColor(input_img, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    smoothed = cv2.bilateralFilter(gray, d=9, sigmaColor=75, sigmaSpace=75)
+    blurred = cv2.GaussianBlur(smoothed, (5, 5), 0)
     binary_img = cv2.adaptiveThreshold(
         blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 21, 10
     )
-
+    
     binary_img[binary_img == 255] = 1
     skeleton_img = skeletonize(binary_img)
     skeleton_img = skeleton_img.astype(np.uint8) * 255
 
-    # if visualize_steps:
-    #     cv2.imshow("1. Skeletonized Image", skeleton_img)
-    #     cv2.waitKey(0)
+    if visualize_steps:
+        cv2.imshow("1. Skeletonized Image", skeleton_img)
+        cv2.waitKey(0)
 
     ##
     contours, _ = cv2.findContours(
@@ -73,8 +47,10 @@ def extract_geometry_from_sketch(
         if len(contour) < min_contour_length:
             continue
         epsilon = epsilon_multiplier * cv2.arcLength(contour, True)
-        approximated_path = cv2.approxPolyDP(contour, epsilon, False)
-        all_paths.append(approximated_path.squeeze().tolist())
+        raw_path = contour.squeeze().tolist()
+
+        simplified_path = rdp(raw_path, epsilon)
+        all_paths.append(simplified_path)
 
     print(f"Processed contours into {len(all_paths)} paths.")
 
@@ -129,7 +105,7 @@ def save_paths_to_csv(paths, output_path):
     print(f"Successfully saved path polyline data to {output_path}")
 
 if __name__ == "__main__":
-    file_path = "./testPlanSketch2.jpg"
+    file_path = "./sSketch2.jpg"
     wall_paths = extract_geometry_from_sketch(file_path, visualize_steps=True)
 
     if wall_paths:

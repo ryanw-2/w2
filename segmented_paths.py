@@ -37,7 +37,7 @@ def segment_path(points, angle_threshold=136):
         angle = angle_between(a, b, c)
         print(f"Angle at point {b}: {abs(angle-180):.2f}°")
 
-        if abs(angle-180) < 136:
+        if abs(angle-180) < angle_threshold:
             segments.append(('straight', buffer))
             buffer = [b]
             mode = 'straight'
@@ -145,7 +145,7 @@ def save_paths_to_csv_prim(paths, output_path):
     print(f"Saved processed paths to {output_path}")
 
 if __name__ == "__main__":
-    file_path = "./testPlanSketch2.jpg"
+    file_path = "sSketch1.jpg"
     cleaned_paths, path_kinds = extract_geometry_from_sketch(file_path, epsilon=2.0, visualize_steps=True)
 
     if cleaned_paths:

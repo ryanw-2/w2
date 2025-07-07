@@ -146,7 +146,7 @@ def save_paths_to_csv_prim(paths, output_path):
     print(f"Saved processed paths to {output_path}")
 
 if __name__ == "__main__":
-    file_path = "testPlanSketch2.jpg"
+    file_path = "sPoche.jpg"
     cleaned_paths = extract_geometry_from_sketch(file_path, epsilon=3.0, visualize_steps=True)
 
     if cleaned_paths:
