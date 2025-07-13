@@ -10,13 +10,14 @@ from rdp_utils import rdp
 def callback(input):
     pass
 
-def extract_geometry_from_sketch(
-    image_path: str, epsilon_multiplier: float = 0.001, visualize_steps: bool = True
-):
-
+def get_skeleton(image_path: str):
+    """
+    Takes an image and skeletonizes all edges. 
+    Similar to getting Canny edges.
+    """
     input_img = cv2.imread(image_path)
     if input_img is None:
-        print("Error: Could not read image at file path")
+        print("Error: Could not read image at file path.")
         return
     
     input_img = cv2.flip(input_img, 0)
@@ -30,6 +31,19 @@ def extract_geometry_from_sketch(
     binary_img[binary_img == 255] = 1
     skeleton_img = skeletonize(binary_img)
     skeleton_img = skeleton_img.astype(np.uint8) * 255
+
+    return skeleton_img
+
+def extract_geometry_from_sketch(
+    skeleton_img, epsilon_multiplier: float = 0.001, visualize_steps: bool = True
+):
+    """
+    Using Ramer-Douglas-Peucker algorithm to extract contours from
+    given skeleton image.
+    """
+    if skeleton_img is None:
+        print("Error: Could not skeletonize input.")
+        return
 
     if visualize_steps:
         cv2.imshow("1. Skeletonized Image", skeleton_img)
@@ -53,17 +67,6 @@ def extract_geometry_from_sketch(
         all_paths.append(simplified_path)
 
     print(f"Processed contours into {len(all_paths)} paths.")
-
-    if visualize_steps:
-        vis_img = input_img.copy()
-        for path in all_paths:
-            np_path = np.array(path, dtype=np.int32)
-            cv2.polylines(
-                vis_img, [np_path], isClosed=False, color=(0, 255, 0), thickness=1
-            )
-        cv2.imshow("2. Approximated Geometry", vis_img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
     
     return all_paths
 
@@ -105,9 +108,10 @@ def save_paths_to_csv(paths, output_path):
     print(f"Successfully saved path polyline data to {output_path}")
 
 if __name__ == "__main__":
-    file_path = "./sSketch2.jpg"
-    wall_paths = extract_geometry_from_sketch(file_path, visualize_steps=True)
+    file_path = "./data/sSketch1.jpg"
+    canny_img = get_skeleton(file_path)
+    wall_paths = extract_geometry_from_sketch(canny_img, visualize_steps=True)
 
     if wall_paths:
         # save_lines_to_json(wall_paths, 'level.json')
-        save_paths_to_csv(wall_paths, 'paths.csv')
+        save_paths_to_csv(wall_paths, './output/paths.csv')

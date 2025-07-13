@@ -10,12 +10,6 @@ The objective is to enable designers and architecture students to quickly visual
 
 The architectural workflow has long depended on 2D representations, which—though essential—can often be static, ambiguous, or disconnected from spatial intuition. By enabling users to walk through their sketches, this tool introduces an **experiential dimension** to ideation.
 
-This project addresses the critical "so what?" question by making early design more interactive, immersive, and testable. The final vision includes:
-
-- A Unity-based demo environment  
-- Documented computational workflows  
-- Use-case case studies highlighting the pipeline's versatility
-
 ## Architectural and Design Relevance
 
 This work connects deeply to architecture's core practice of spatial representation. Just as hand-drafted plans once revolutionized architectural communication, AI-enhanced representations now promise to redefine how we **ideate, prototype, and share space**.
@@ -36,7 +30,7 @@ The pipeline supports:
 |                | **scikit-image / RDP / NumPy**       | Geometry cleanup, segmentation, and path simplification |
 | **3D Engine**  | **Unity**                            | Hosts the real-time first-person walkthrough with lighting and collision |
 | **Export**     | `.3dm`, `.obj`, `.json`              | Supports interoperability between browser viewer and Unity walkthrough |
-| **Optional**   | `RhinoCompute`, `Shapely`, `Grasshopper` | For advanced geometry processing and interoperability |
+| **3D Geometry**   | **Rhino/Grasshopper** | For advanced geometry processing and interoperability |
 
 ## Algorithmic Overview
 

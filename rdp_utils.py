@@ -15,8 +15,8 @@ def perpendicular_distance(point, line_start, line_end):
     return num / den
 
 def rdp(path, epsilon):
-    """Simplify a polyline using the Ramer–Douglas–Peucker algorithm."""
-    if len(path) < 3:
+    """Simplify a polyline using the Ramer-Douglas-Peucker algorithm."""
+    if len(path) < 2:
         return path
 
     dmax = 0.0
