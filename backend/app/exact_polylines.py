@@ -108,10 +108,10 @@ def save_paths_to_csv(paths, output_path):
     print(f"Successfully saved path polyline data to {output_path}")
 
 if __name__ == "__main__":
-    file_path = "./data/sSketch1.jpg"
+    file_path = "backend/app/data/sLine.jpg"
     canny_img = get_skeleton(file_path)
     wall_paths = extract_geometry_from_sketch(canny_img, visualize_steps=True)
 
     if wall_paths:
         # save_lines_to_json(wall_paths, 'level.json')
-        save_paths_to_csv(wall_paths, './output/paths.csv')
+        save_paths_to_csv(wall_paths, 'backend/app/paths.csv')

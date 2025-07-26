@@ -19,11 +19,14 @@ app.add_middleware(
     allow_headers=['*']
 )
 
-INPUT_FILEPATH = "../data/sLine.jpg"
-OUTPUT_FILEPATH = "paths.csv"
+INPUT_FILEPATH = "backend/app/data/sPoche.jpg"
+OUTPUT_FILEPATH = "backend/app/data/paths.csv"
 PROMPT = "Floor plan of modern beach resort in Miami"
 
 canny_img = get_skeleton(INPUT_FILEPATH)
+
+
+
 wall_paths = extract_geometry_from_sketch(canny_img, visualize_steps=True)
 cleaned_paths = clean_polylines(wall_paths)
 
