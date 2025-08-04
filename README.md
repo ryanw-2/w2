@@ -8,7 +8,7 @@ The objective is to enable designers and architecture students to quickly visual
 
 ## Motivation
 
-The architectural workflow has long depended on 2D representations, which—though essential—can often be static, ambiguous, or disconnected from spatial intuition. By enabling users to walk through their sketches, this tool introduces an **experiential dimension** to ideation.
+The architectural workflow has long depended on 2D representations, which can often be static, ambiguous, or disconnected from spatial intuition. By enabling users to walk through their sketches, this tool introduces an **experiential dimension** to ideation.
 
 ## Architectural and Design Relevance
 
