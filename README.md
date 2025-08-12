@@ -9,6 +9,8 @@ This project aims to construct a computational pipeline that converts 2D archite
 
 The objective is to enable designers and architecture students to quickly visualize their spatial ideas in a realistic setting, enhancing early-stage decision making.
 
+![sSketch1](sSketch1.jpg) ![model_sSketch1](model_sSketch1.png)
+
 ## Motivation
 
 The architectural workflow has long depended on 2D representations, which can often be static, ambiguous, or disconnected from spatial intuition. By enabling users to walk through their sketches, this tool introduces an **experiential dimension** to ideation.
