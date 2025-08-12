@@ -1,5 +1,8 @@
 # From Sketch to Space: Interactive 3D Environments from 2D Floor Plans
 
+View this project on my website with full video demos!
+![Website Link](https://www.ryanw2.com/walkthrough-sketch)
+
 ## Problem Statement
 
 This project aims to construct a computational pipeline that converts 2D architectural floor plans into interactive 3D environments using Unity. The pipeline begins with raster image input, processed using OpenCV to recognize walls, doors, and windows. Extracted vectors are algorithmically converted into simplified 3D geometry, which is then imported into Unity's engine to enable spatial walkthroughs.
