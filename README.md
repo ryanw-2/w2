@@ -79,11 +79,7 @@ Modules include:
 
 ## Demo & Interface
 
-- 🧭 **Unity Walkthrough Demo**: [Link or placeholder]  
-- 🌐 **Three.js Viewer**: View and rotate the processed 3DM file in-browser  
-- 🗺️ **Side-by-side comparisons**: Raw sketch, processed vectors, and 3D model  
-
-*Screenshots, video walkthroughs, and GIFs go here.*
+<img src="sHero_combined.gif" alt="Key Pages Animation" width="600" />
 
 ## Future Work
 
