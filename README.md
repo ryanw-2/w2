@@ -9,7 +9,7 @@ This project aims to construct a computational pipeline that converts 2D archite
 
 The objective is to enable designers and architecture students to quickly visualize their spatial ideas in a realistic setting, enhancing early-stage decision making.
 
-![sSketch1](sSketch1.jpg) ![model_sSketch1](model_sSketch1.png)
+![Hero](walkthrough_hero.png)
 
 ## Motivation
 
