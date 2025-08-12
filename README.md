@@ -1,7 +1,7 @@
 # From Sketch to Space: Interactive 3D Environments from 2D Floor Plans
 
 View this project on my website with full video demos!
-![Website Link](https://www.ryanw2.com/walkthrough-sketch)
+[Website Link](https://www.ryanw2.com/walkthrough-sketch)
 
 ## Problem Statement
 
