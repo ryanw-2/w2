@@ -32,37 +32,6 @@ The pipeline supports:
 | **Export**     | `.3dm`, `.obj`, `.json`              | Supports interoperability between browser viewer and Unity walkthrough |
 | **3D Geometry**   | **Rhino/Grasshopper** | For advanced geometry processing and interoperability |
 
-## Algorithmic Overview
-
-### 1. Ramer–Douglas–Peucker (RDP) Algorithm
-
-**Purpose**: Simplifies polylines by recursively removing points that deviate the least from a straight path, preserving shape while reducing complexity.
-
-- **Strengths**: Excellent for removing noise from complex contours.  
-- **Limitations**: May oversimplify curves if not finely tuned.
-
-**Screenshot: RDP-Simplified Floor Plan**  
-![RDP Screenshot](screenshots/rdp_example.jpg)
-
-### 2. Canny Edge Detection
-
-**Purpose**: Detects edges based on image gradients using a multi-stage algorithm (smoothing, gradient calculation, non-maximum suppression, hysteresis thresholding).
-
-- **Strengths**: Good at finding clean, sharp contours in raster input.  
-- **Limitations**: Sensitive to noise; may produce fragmented outputs in sketchy drawings.
-
-**Screenshot: Canny Edge Detection Output**  
-![Canny Screenshot](screenshots/canny_example.jpg)
-
-### 3. Corner Detection (Harris, Shi-Tomasi)
-
-**Purpose**: Identifies significant "turns" or junctions in geometry, helping to segment walls or capture key vertices.
-
-- **Strengths**: Helps segment paths and distinguish straight vs. curved walls.  
-- **Limitations**: Often returns false positives in noisy drawings; pairing with line masks helps improve accuracy.
-
-**Screenshot: Corner Detection Overlay**  
-![Corner Screenshot](screenshots/corner_example.jpg)
 
 ## Modular Pipeline Design
 
