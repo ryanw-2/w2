@@ -1,14 +1,19 @@
 # From Sketch to Space: Interactive 3D Environments from 2D Floor Plans
 
+View this project on my website with full video demos!
+[Website Link](https://www.ryanw2.com/walkthrough-sketch)
+
 ## Problem Statement
 
 This project aims to construct a computational pipeline that converts 2D architectural floor plans into interactive 3D environments using Unity. The pipeline begins with raster image input, processed using OpenCV to recognize walls, doors, and windows. Extracted vectors are algorithmically converted into simplified 3D geometry, which is then imported into Unity's engine to enable spatial walkthroughs.
 
 The objective is to enable designers and architecture students to quickly visualize their spatial ideas in a realistic setting, enhancing early-stage decision making.
 
+![Hero](walkthrough_hero.png)
+
 ## Motivation
 
-The architectural workflow has long depended on 2D representations, which—though essential—can often be static, ambiguous, or disconnected from spatial intuition. By enabling users to walk through their sketches, this tool introduces an **experiential dimension** to ideation.
+The architectural workflow has long depended on 2D representations, which can often be static, ambiguous, or disconnected from spatial intuition. By enabling users to walk through their sketches, this tool introduces an **experiential dimension** to ideation.
 
 ## Architectural and Design Relevance
 
@@ -32,37 +37,6 @@ The pipeline supports:
 | **Export**     | `.3dm`, `.obj`, `.json`              | Supports interoperability between browser viewer and Unity walkthrough |
 | **3D Geometry**   | **Rhino/Grasshopper** | For advanced geometry processing and interoperability |
 
-## Algorithmic Overview
-
-### 1. Ramer–Douglas–Peucker (RDP) Algorithm
-
-**Purpose**: Simplifies polylines by recursively removing points that deviate the least from a straight path, preserving shape while reducing complexity.
-
-- **Strengths**: Excellent for removing noise from complex contours.  
-- **Limitations**: May oversimplify curves if not finely tuned.
-
-**Screenshot: RDP-Simplified Floor Plan**  
-![RDP Screenshot](screenshots/rdp_example.jpg)
-
-### 2. Canny Edge Detection
-
-**Purpose**: Detects edges based on image gradients using a multi-stage algorithm (smoothing, gradient calculation, non-maximum suppression, hysteresis thresholding).
-
-- **Strengths**: Good at finding clean, sharp contours in raster input.  
-- **Limitations**: Sensitive to noise; may produce fragmented outputs in sketchy drawings.
-
-**Screenshot: Canny Edge Detection Output**  
-![Canny Screenshot](screenshots/canny_example.jpg)
-
-### 3. Corner Detection (Harris, Shi-Tomasi)
-
-**Purpose**: Identifies significant "turns" or junctions in geometry, helping to segment walls or capture key vertices.
-
-- **Strengths**: Helps segment paths and distinguish straight vs. curved walls.  
-- **Limitations**: Often returns false positives in noisy drawings; pairing with line masks helps improve accuracy.
-
-**Screenshot: Corner Detection Overlay**  
-![Corner Screenshot](screenshots/corner_example.jpg)
 
 ## Modular Pipeline Design
 
@@ -79,11 +53,7 @@ Modules include:
 
 ## Demo & Interface
 
-- 🧭 **Unity Walkthrough Demo**: [Link or placeholder]  
-- 🌐 **Three.js Viewer**: View and rotate the processed 3DM file in-browser  
-- 🗺️ **Side-by-side comparisons**: Raw sketch, processed vectors, and 3D model  
-
-*Screenshots, video walkthroughs, and GIFs go here.*
+<img src="sHero_combined.gif" alt="Key Pages Animation" width="600" />
 
 ## Future Work
 
