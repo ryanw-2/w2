@@ -19,7 +19,7 @@ app.add_middleware(
     allow_headers=['*']
 )
 
-INPUT_FILEPATH = "backend/app/data/sPoche.jpg"
+INPUT_FILEPATH = "backend/app/data/sSketch1.jpg"
 OUTPUT_FILEPATH = "backend/app/data/paths.csv"
 PROMPT = "Floor plan of modern beach resort in Miami"
 

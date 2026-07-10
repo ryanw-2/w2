@@ -53,8 +53,16 @@ def extract_geometry_from_sketch(
     contours, _ = cv2.findContours(
         skeleton_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
     )
-    print(f"Found {len(contours)} initial contours.")
 
+
+    print(f"Found {len(contours)} initial contours.")
+    vis = cv2.cvtColor(skeleton_img, cv2.COLOR_GRAY2BGR)
+
+    # Draw raw contours (green)
+    cv2.drawContours(vis, contours, contourIdx=-1, color=(0, 255, 0), thickness=1)
+    if visualize_steps:
+        cv2.imshow("2. Contours Image", vis)
+        cv2.waitKey(0)
     all_paths = []
     min_contour_length = 3
     for contour in contours:
@@ -108,7 +116,7 @@ def save_paths_to_csv(paths, output_path):
     print(f"Successfully saved path polyline data to {output_path}")
 
 if __name__ == "__main__":
-    file_path = "backend/app/data/sLine.jpg"
+    file_path = "backend/app/data/sSketch1.jpg"
     canny_img = get_skeleton(file_path)
     wall_paths = extract_geometry_from_sketch(canny_img, visualize_steps=True)
 
